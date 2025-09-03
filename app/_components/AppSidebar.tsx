@@ -11,9 +11,11 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+import { Calendar, Home, Inbox, Megaphone, Search, Settings, User, Wallet } from "lucide-react"
 import Image from 'next/image'
 import { useParams, usePathname } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import mainLogo from '@/public/adcadabra-logo-main.png'
 
 const items = [
     {
@@ -22,24 +24,24 @@ const items = [
         icon: Home,
     },
     {
-        title: "Inbox",
-        url: "#",
+        title: "Creative Tools",
+        url: "/creative-tools",
         icon: Inbox,
     },
     {
-        title: "Calendar",
-        url: "#",
-        icon: Calendar,
+        title: "My Ads",
+        url: "/my-ads",
+        icon: Megaphone,
     },
     {
-        title: "Search",
+        title: "Upgrade",
         url: "#",
-        icon: Search,
+        icon: Wallet,
     },
     {
-        title: "Settings",
+        title: "Profile",
         url: "#",
-        icon: Settings,
+        icon: User,
     },
 ]
 
@@ -49,8 +51,8 @@ export function AppSidebar() {
         <Sidebar>
             <SidebarHeader>
                 <div className='p-4'>
-                    <Image src={'./logo.svg'} alt='logo' width={100} height={100}
-                        className='w-full h-full' />
+                    <Image src={mainLogo} alt='logo' width={200} height={200}
+                        className='w-full h-full rounded-lg' />
                     <h2 className='text-sm text-gray-400 text-center'>Build Awesome</h2>
                 </div>
             </SidebarHeader>
@@ -76,7 +78,8 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                <h2 className='p-2 text-gray-400 text-sm'>Copyright @Tubeguruji</h2>
+                <Button>Sign In</Button>
+                <h2 className='p-2 text-gray-400 text-sm'>Copyright AdCadabra</h2>
             </SidebarFooter>
         </Sidebar>
     )

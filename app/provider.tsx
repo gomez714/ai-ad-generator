@@ -44,9 +44,7 @@ function Provider({
     return (
         <NextThemesProvider {...props}>
             <AuthContext.Provider value={{ user }}>
-                <div>
-                    {children}
-                </div>
+                {children}
             </AuthContext.Provider>
         </NextThemesProvider>
     )
