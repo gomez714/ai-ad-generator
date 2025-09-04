@@ -4,26 +4,28 @@ import productImage from "@/public/product-image.png";
 import productAvatar from "@/public/product-avatar.png";
 import productVideo from "@/public/product-video.png";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 const AiTools = [
   {
     name: "AI Proudcts Image",
     description:
       "Generate high quality, professional images of your products using AI",
     banner: productImage,
-    path: "/"
+    path: "/creative-ai-tools/product-images"
   },
+  
   {
-    name: "AI Proudcts Image 2",
+    name: "AI Proudcts Video",
     description:
-      "Generate high quality, professional images of your products using AI",
-    banner: productAvatar,
-    path: "/"
-  },
-  {
-    name: "AI Proudcts Image 3",
-    description:
-      "Generate high quality, professional images of your products using AI",
+      "Create engaging videos for your products using AI",
     banner: productVideo,
+    path: "/"
+  },
+  {
+    name: "AI Proudcts Avatar",
+    description:
+      "Bring your products to life with AI Avatars",
+    banner: productAvatar,
     path: "/"
   },
 ];
@@ -38,7 +40,9 @@ function AiToolList() {
             <div>
               <h2 className="font-bold text-2xl">{tool.name}</h2>
               <p className="opacity-60 mt-2">{tool.description}</p>
-              <Button className="mt-4">Create Now</Button>
+              <Button className="mt-4" asChild>
+                <Link href={tool.path}>Create Now</Link>
+              </Button>
             </div>
             <Image
               src={tool.banner}

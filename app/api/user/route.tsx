@@ -1,31 +1,46 @@
 
 import { NextRequest, NextResponse } from "next/server";
-import { eq } from "drizzle-orm";
-import { db } from "@/configs/db";
-import { usersTable } from "@/configs/schema";
+import { db } from "@/configs/firebaseConfig";
+import { collection, query, where, getDocs, addDoc, doc } from "firebase/firestore";
 
 export async function POST(req: NextRequest) {
     const { userEmail, userName } = await req.json();
 
-    // try {
-    const result = await db.select().from(usersTable)
-        .where(eq(usersTable.email, userEmail));
+    try {
+        // Check if user already exists
+        const usersRef = collection(db, "users");
+        const q = query(usersRef, where("email", "==", userEmail));
+        const querySnapshot = await getDocs(q);
 
-    if (result?.length == 0) {
+        if (querySnapshot.empty) {
+            // User doesn't exist, create new user
+            const newUser = {
+                name: userName,
+                email: userEmail,
+                credits: 0,
+                createdAt: new Date().toISOString()
+            };
 
-        const result: any = await db.insert(usersTable).values({
-            name: userName,
-            email: userEmail,
-            credits: 0,
-            // @ts-ignore
-        }).returning(usersTable);
+            const docRef = await addDoc(usersRef, newUser);
+            
+            return NextResponse.json({
+                id: docRef.id,
+                ...newUser
+            });
+        } else {
+            // User exists, return existing user data
+            const existingUser = querySnapshot.docs[0];
+            return NextResponse.json({
+                id: existingUser.id,
+                ...existingUser.data()
+            });
+        }
 
-        return NextResponse.json(result[0]);
+    } catch (error) {
+        console.error("Error in user API:", error);
+        return NextResponse.json(
+            { error: "Internal server error" }, 
+            { status: 500 }
+        );
     }
-    return NextResponse.json(result[0]);
-
-
-    // } catch (e) {
-    //     return NextResponse.json(e)
-    // }
 }
