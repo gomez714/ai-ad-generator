@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import FormInput from "../_components/FormInput";
 import ResultPreview from "../_components/ResultPreview";
 import axios from "axios";
+import { useAuthContext } from "@/app/provider";
 
 type FormData = {
   file?: File | undefined;
@@ -11,14 +12,15 @@ type FormData = {
   imageUrl?: string;
 };
 
-function ProudctImagesPage() {
+function ProductImagesPage() {
   const [formData, setFormData] = useState<FormData>({
     file: undefined,
     description: "",
     resolution: "1024x1024",
   });
   const [loading, setLoading] = useState(false);
-  const onHandleInputChange = (field: string, value: string) => {
+  const {user} = useAuthContext();
+  const onHandleInputChange = (field: string, value: unknown) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
   const onGenerate = async () => {
@@ -39,9 +41,12 @@ function ProudctImagesPage() {
     }
     formDataToSend.append("description", formData.description);
     formDataToSend.append("resolution", formData.resolution);
+    formDataToSend.append("userEmail", user?.email || "");
 
     const result = await axios.post("/api/generate-product-image", formDataToSend);
     console.log(result.data);
+
+
     setLoading(false);
   };
   return (
@@ -50,14 +55,14 @@ function ProudctImagesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div>
           <FormInput
-            onHandleInputChange={(field: string, value: string) =>
+            onHandleInputChange={(field: string, value: unknown) =>
               onHandleInputChange(field, value)
             }
             onGenerate={onGenerate}
             loading={loading}
           />
         </div>
-        <div className="md:grid-cols-2">
+        <div className="md:col-span-2">
           <ResultPreview />
         </div>
       </div>
@@ -65,4 +70,4 @@ function ProudctImagesPage() {
   );
 }
 
-export default ProudctImagesPage;
+export default ProductImagesPage;

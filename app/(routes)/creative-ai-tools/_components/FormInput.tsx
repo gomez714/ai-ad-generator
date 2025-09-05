@@ -15,8 +15,8 @@ import {
 import { Button } from "@/components/ui/button";
 
 interface FormInputProps {
-  onHandleInputChange: any;
-  onGenerate: any;
+  onHandleInputChange: (field: string, value: unknown) => void;
+  onGenerate: () => void;
   loading: boolean;
 }
 
@@ -121,13 +121,13 @@ function FormInput({onHandleInputChange, onGenerate, loading}: FormInputProps) {
             <SelectItem value="1536x1024">
               <div className="flex items-center gap-2">
                 <Monitor className="w-4 h-4" />
-                <span>16:9</span>
+                <span>3:2</span>
               </div>
             </SelectItem>
             <SelectItem value="1024x1536">
               <div className="flex items-center gap-2">
                 <Smartphone className="w-4 h-4" />
-                <span>9:16</span>
+                <span>2:3</span>
               </div>
             </SelectItem>
           </SelectContent>
